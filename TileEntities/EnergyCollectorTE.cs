@@ -1,0 +1,79 @@
+﻿using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using TerraEnergy.Tiles;
+using TerraEnergy.Tiles.FunctionalTiles;
+using TerraEnergy.EnergyAPI;
+using TerraEnergy.Interface;
+using TerraEnergy.UI.Elements;
+
+namespace TerraEnergy.TileEntities {
+
+    class EnergyCollectorTE : StorageEntity, ITECapacitorLinkable
+    {
+        private readonly int drainRange = 50;
+        private int maxEnergy = 100000;
+        private CapacitorTE boundCapacitor;
+
+        public override void LoadEntity(TagCompound tag)
+        {
+            maxEnergy = 100000;
+            energy = new EnergyCore(maxEnergy);
+  
+        }
+
+        public void LinkToCapacitor(CapacitorTE capacitor)
+        {
+            boundCapacitor = capacitor;
+        }
+
+        public override void Update()
+        {
+            int i = Position.X + Main.rand.Next(-drainRange, drainRange);
+            int j = Position.Y + Main.rand.Next(-drainRange, drainRange);
+
+            Tile tile = Main.tile[i, j];
+
+            if (energy == null)
+            {
+                energy = new EnergyCore(maxEnergy);
+            }
+
+            if (boundCapacitor != null)
+            {
+                boundCapacitor.energy.addEnergy(energy.ConsumeEnergy(boundCapacitor.maxTransferRate));
+            }
+
+            if (tile != null && tile.type != ModContent.TileType<EnergyCollector>() || tile.type != ModContent.TileType<BasicCapacitor>() || tile.type != ModContent.TileType<TerraWaste>() || tile.type != ModContent.TileType<TerraFurnace>() && !energy.isFull())
+            {
+                if (Main.tile[i, j].type == TileID.LunarOre)
+                {
+                    energy.addEnergy(50);
+                    //Main.tile[i, j].type = (ushort)ModContent.TileType<TerraWaste>();
+                }
+
+                if (Main.tile[i, j].active() && Main.tile[i, j].type != (ushort)ModContent.TileType<TerraWaste>())
+                {
+
+                    energy.addEnergy(5);
+                    if (Main.rand.Next(0, 1000) == 5)
+                    {
+                        //Main.tile[i, j].type = (ushort)ModContent.TileType<TerraWaste>();
+                    }
+                }
+            }
+        }
+
+        public override bool ValidTile(int i, int j)
+        {
+            Tile tile = Main.tile[i, j];
+            return tile.active() && tile.type == ModContent.TileType<EnergyCollector>() && tile.frameX == 0 && tile.frameY == 0;
+        }
+
+        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
+        {
+            return Place(i - 1, j - 2);
+        }
+    }
+}
