@@ -14,7 +14,7 @@ using TerraEnergy.Items;
 namespace TerraEnergy.Tiles.FunctionalTiles {
     public class TerraFurnace : ModTile
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
 
             //TileObjectData.newTile.CoordinateHeights = new int[] { 60, 60, 42 };
@@ -36,7 +36,7 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
 
         }
 
-        public override bool NewRightClick(int i, int j)
+        public override bool RightClick(int i, int j)
         {
             Player player = Main.player[Main.myPlayer];
             Item currentSelectedItem = player.inventory[player.selectedItem];
@@ -44,12 +44,12 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
             Tile tile = Main.tile[i, j];
 
 
-            int left = i - (tile.frameX / 18);
-            int top = j - (tile.frameY / 18);
+            int left = i - (tile.TileFrameX / 18);
+            int top = j - (tile.TileFrameY / 18);
 
             int index = ModContent.GetInstance<TerraFurnaceEntity>().Find(left, top);
 
-            Main.NewText("X " + i + " Y " + j);
+            //Main.NewText("X " + i + " Y " + j);
 
             if (index == -1)
             {
@@ -58,16 +58,15 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
             }
 
             StorageEntity se = (StorageEntity)TileEntity.ByID[index];
-            if (currentSelectedItem.type == mod.ItemType("TerraMeter"))
+            if (currentSelectedItem.type == ModContent.ItemType<TerraMeter>())
             {
                 se = (StorageEntity)TileEntity.ByID[index];
                 Main.NewText(se.GetEnergy().getCurrentEnergyLevel() + " / " + se.GetEnergy().getMaxEnergyLevel() + " TE");
                 return false;
             }
 
-            if (currentSelectedItem.type == mod.ItemType("RodOfLinking"))
+            if (currentSelectedItem.ModItem is RodOfLinking it)
             {
-                RodOfLinking it = currentSelectedItem.modItem as RodOfLinking;
                 se = (StorageEntity)TileEntity.ByID[index];
                 it.SaveLinkableEntityLocation(se);
                 Main.NewText("Terra Furnace succesfully linked, now right click on a capacitor to unlink");
@@ -82,7 +81,7 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
 
     }
 
-    class TerraFurnaceEntity : StorageEntity, ITECapacitorLinkable
+    public class TerraFurnaceEntity : StorageEntity, ITECapacitorLinkable
     {
         private FurnaceUI furnaceUi;
 
@@ -148,18 +147,17 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
 
         public void LinkToCapacitor(CapacitorTE capacitor) => boundCapacitor = capacitor;
 
-        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
-        {
+        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
             energy = new EnergyCore(50000);
             return Place(i - 3, j - 2);
         }
 
-        public override bool ValidTile(int i, int j)
+        public override bool IsTileValidForEntity(int i, int j)
         {
             Tile tile = Main.tile[i, j];
 
-            Main.NewText((tile.active() && tile.type == ModContent.TileType<TerraFurnace>() && tile.frameX == 0 && tile.frameY == 0));
-            return tile.active() && (tile.type == ModContent.TileType<TerraFurnace>()) && tile.frameX == 0 && tile.frameY == 0;
+            Main.NewText((tile.HasTile && tile.TileType == ModContent.TileType<TerraFurnace>() && tile.TileFrameX == 0 && tile.TileFrameY == 0));
+            return tile.HasTile && (tile.TileType == ModContent.TileType<TerraFurnace>()) && tile.TileFrameX == 0 && tile.TileFrameY == 0;
         }
 
         public override void Update()

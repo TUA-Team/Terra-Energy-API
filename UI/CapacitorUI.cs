@@ -9,6 +9,7 @@ using TUA.API.Inventory;
 using TUA.API.Inventory.UI;
 using TerraEnergy.TileEntities;
 using TUA.Utilities;
+using Terraria.GameContent;
 
 namespace TerraEnergy.UI
 {
@@ -24,7 +25,7 @@ namespace TerraEnergy.UI
             chargingSlot = new ChargingSlot[4];
             for (int i = 0; i < chargingSlot.Length; i++)
             {
-                chargingSlot[i] = new ChargingSlot(new Ref<Item>(slot[i]), ModContent.GetTexture("TerraEnergy/Texture/ChargingSlotUI"), capacitorEntity, capacitorEntity.maxTransferRate);
+                chargingSlot[i] = new ChargingSlot(new Ref<Item>(slot[i]), TerraEnergy.GetTexture("Texture/ChargingSlotUI").Value, capacitorEntity, capacitorEntity.maxTransferRate);
             }
 
             this.capacitorEntity = capacitorEntity;
@@ -50,7 +51,7 @@ namespace TerraEnergy.UI
                 panel.Append(slot);
             }
 
-            Texture2D buttonDeleteTexture = ModContent.GetTexture("Terraria/UI/ButtonDelete");
+            var buttonDeleteTexture = ModContent.Request<Texture2D>("Terraria/UI/ButtonDelete");
             UIImageButton closeButton = new UIImageButton(buttonDeleteTexture);
             closeButton.Left.Set(400 - 45, 0f);
             closeButton.Width.Set(22, 0f);
@@ -70,7 +71,7 @@ namespace TerraEnergy.UI
         {
             base.DrawChildren(spriteBatch);
             Vector2 nameDrawingPosition = new Vector2(Main.screenWidth / 2 - 60, Main.screenHeight / 2 - 95);
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, capacitorEntity.Name,
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, capacitorEntity.Name,
                 nameDrawingPosition, Color.White, 0f, Vector2.Zero,
                 Vector2.One);
         }

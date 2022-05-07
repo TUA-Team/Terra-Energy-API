@@ -45,15 +45,15 @@ namespace TerraEnergy.TileEntities {
                 boundCapacitor.energy.addEnergy(energy.ConsumeEnergy(boundCapacitor.maxTransferRate));
             }
 
-            if (tile != null && tile.type != ModContent.TileType<EnergyCollector>() || tile.type != ModContent.TileType<BasicCapacitor>() || tile.type != ModContent.TileType<TerraWaste>() || tile.type != ModContent.TileType<TerraFurnace>() && !energy.isFull())
+            if (tile != null && tile.TileType != ModContent.TileType<EnergyCollector>() || tile.TileType != ModContent.TileType<BasicCapacitor>() || tile.TileType != ModContent.TileType<TerraWaste>() || tile.TileType != ModContent.TileType<TerraFurnace>() && !energy.isFull())
             {
-                if (Main.tile[i, j].type == TileID.LunarOre)
+                if (Main.tile[i, j].TileType == TileID.LunarOre)
                 {
                     energy.addEnergy(50);
                     //Main.tile[i, j].type = (ushort)ModContent.TileType<TerraWaste>();
                 }
 
-                if (Main.tile[i, j].active() && Main.tile[i, j].type != (ushort)ModContent.TileType<TerraWaste>())
+                if (Main.tile[i, j].HasTile && Main.tile[i, j].TileType != (ushort)ModContent.TileType<TerraWaste>())
                 {
 
                     energy.addEnergy(5);
@@ -65,13 +65,13 @@ namespace TerraEnergy.TileEntities {
             }
         }
 
-        public override bool ValidTile(int i, int j)
+        public override bool IsTileValidForEntity(int x, int y)
         {
-            Tile tile = Main.tile[i, j];
-            return tile.active() && tile.type == ModContent.TileType<EnergyCollector>() && tile.frameX == 0 && tile.frameY == 0;
+            Tile tile = Main.tile[x, y];
+            return tile.HasTile && tile.TileType == ModContent.TileType<EnergyCollector>() && tile.TileFrameX == 0 && tile.TileFrameY == 0;
         }
 
-        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
+        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
         {
             return Place(i - 1, j - 2);
         }

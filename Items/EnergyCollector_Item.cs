@@ -1,13 +1,15 @@
-﻿using Terraria.ModLoader;
+﻿using TerraEnergy.Tiles.FunctionalTiles;
+using Terraria.ModLoader;
 
-namespace TerraEnergy.Tiles {
-    class TerraWaste_Item : ModItem {
+namespace TerraEnergy.Items {
+    class EnergyCollector_Item : ModItem {
         public override void SetStaticDefaults() {
-            DisplayName.SetDefault("Terra Waste");
-            Tooltip.SetDefault("A block where the essence was completly drained...");
+            DisplayName.SetDefault("Energy Collector");
+            Tooltip.SetDefault("A basic terra energy collector");
         }
 
         public override void SetDefaults() {
+
             Item.width = 32;
             Item.height = 48;
             Item.maxStack = 999;
@@ -17,7 +19,7 @@ namespace TerraEnergy.Tiles {
             Item.useTime = 10;
             Item.useStyle = 1;
             Item.autoReuse = true;
-            Item.createTile = ModContent.TileType<TerraWaste>();
+            Item.createTile = ModContent.TileType<EnergyCollector>();
         }
     }
 }

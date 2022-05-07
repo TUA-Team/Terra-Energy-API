@@ -9,9 +9,9 @@ namespace TerraEnergy.Items {
         }
 
         public override void SetDefaults() {
-            item.width = 16;
-            item.height = 16;
-            item.rare = -13;
+            Item.width = 16;
+            Item.height = 16;
+            Item.rare = -13;
         }
     }
 }

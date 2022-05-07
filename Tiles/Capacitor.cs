@@ -9,10 +9,6 @@ namespace TerraEnergy.Tiles
 {
     public class Capacitor : ModTile
     {
-        public override bool Autoload(ref string name, ref string texture) {
-            return false;
-        }
-
         public int maxEnergyStorage;
 
         public ModTileEntity GetCapacitorEntity()
@@ -21,7 +17,7 @@ namespace TerraEnergy.Tiles
 
         }
 
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
             TileObjectData.newTile.Origin = new Point16(0, 0);

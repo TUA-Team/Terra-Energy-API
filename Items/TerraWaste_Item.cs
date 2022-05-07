@@ -1,7 +1,8 @@
-﻿using Terraria.ModLoader;
+﻿using TerraEnergy.Tiles;
+using Terraria.ModLoader;
 
-namespace TerraEnergy.Tiles {
-    class TerraWaste_Item : ModItem {
+namespace TerraEnergy.Items {
+    public sealed class TerraWaste_Item : ModItem {
         public override void SetStaticDefaults() {
             DisplayName.SetDefault("Terra Waste");
             Tooltip.SetDefault("A block where the essence was completly drained...");

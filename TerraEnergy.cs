@@ -1,15 +1,19 @@
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using TerraEnergy.MachineRecipe.Forge;
 using TerraEnergy.MachineRecipe.Furnace;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using TUA.Utilities;
 
-namespace TerraEnergy
-{
-	public class TerraEnergy : Mod
+namespace TerraEnergy {
+    public class TerraEnergy : Mod
 	{
-        public static Texture2D GetTexture(string path) {
-            return ModContent.GetTexture("TerraEnergy/" + path);
+        public static TerraEnergy Instance => ModContent.GetInstance<TerraEnergy>();
+
+        public static Asset<Texture2D> GetTexture(string path) {
+            return ModContent.Request<Texture2D>("TerraEnergy/" + path);
         }
 
         public override void AddRecipes() {

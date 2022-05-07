@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using ReLogic.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.UI;
 
@@ -22,8 +24,8 @@ namespace TerraEnergy.UI.Elements {
             _context = context;
             _scale = scale;
 
-            Width.Set(Main.inventoryBack9Texture.Width * scale, 0f);
-            Height.Set(Main.inventoryBack9Texture.Height * scale, 0f);
+            Width.Set(TextureAssets.InventoryBack9.Value.Width * scale, 0f);
+            Height.Set(TextureAssets.InventoryBack9.Value.Height * scale, 0f);
 
             validItemFunc = i => true;
         }
@@ -100,7 +102,7 @@ namespace TerraEnergy.UI.Elements {
 
         public bool IsEmpty => item.IsAir;
 
-        public Texture2D ItemTexture => Main.itemTexture[item.type];
+        public Asset<Texture2D> ItemTexture => TextureAssets.Item[item.type];
 
         public int MouseX { get; private set; }
         public int MouseY { get; private set; }

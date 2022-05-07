@@ -12,24 +12,24 @@ using TerraEnergy.Items;
 namespace TerraEnergy.Tiles.FunctionalTiles {
     public class BasicCapacitor : Capacitor
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
-            base.SetDefaults();
+            base.SetStaticDefaults();
             TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
             TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16 };
             TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<BasicTECapacitorEntity>().Hook_AfterPlacement, -1, 0, false);
             TileObjectData.addTile(Type);
         }
 
-        public override bool NewRightClick(int i, int j)
+        public override bool RightClick(int i, int j)
         {
             Player player = Main.player[Main.myPlayer];
             Item currentSelectedItem = player.inventory[player.selectedItem];
 
             Tile tile = Main.tile[i, j];
 
-            int left = i - (tile.frameX / 18);
-            int top = j - (tile.frameY / 18);
+            int left = i - (tile.TileFrameX / 18);
+            int top = j - (tile.TileFrameY / 18);
 
             Main.NewText("X " + i + " Y " + j);
 
@@ -48,9 +48,8 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
                 return false;
             }
 
-            if (currentSelectedItem.type == ModContent.ItemType<RodOfLinking>())
+            if (currentSelectedItem.ModItem is RodOfLinking it)
             {
-                RodOfLinking it = currentSelectedItem.modItem as RodOfLinking;
                 int tileEntityID = it.GetEntity();
 
                 if (tileEntityID == -1)
@@ -59,9 +58,10 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
                     return false;
                 }
 
+                // TODO: highly repetitive, plus it seems a little scuffed
                 CapacitorTE ce = (CapacitorTE)TileEntity.ByID[index];
 
-                if (ModTileEntity.GetTileEntity(it.GetStoredEntityType().type) is ITECapacitorLinkable terraEnergyCompatibleLinkable)
+                if (TileEntity.ByID[it.GetStoredEntityType().type] is ITECapacitorLinkable terraEnergyCompatibleLinkable)
                 {
                     terraEnergyCompatibleLinkable.LinkToCapacitor(ce);
                     Main.NewText("Succesfully linked to a capacitor, now transferring energy to it", Color.ForestGreen);
@@ -94,7 +94,7 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
             energy = new EnergyCore(GetMaxEnergyStored());
         }
 
-        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
+        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
         {
             maxTransferRate = 2;
             return Place(i - 1, j - 1);

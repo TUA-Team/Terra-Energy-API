@@ -8,11 +8,11 @@ using TUA.API;
 
 namespace TerraEnergy.Tiles.FunctionalTiles
 {
-    class TerraForge : ModTile
+    public class TerraForge : ModTile
     {
         private int currentFrame = 1;
 
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
 
@@ -26,11 +26,8 @@ namespace TerraEnergy.Tiles.FunctionalTiles
             TileObjectData.newTile.UsesCustomCanPlace = true;
             TileObjectData.addTile(Type);
 
-            animationFrameHeight = 54;
-
+            AnimationFrameHeight = 54;
         }
-
-        
 
 
         public override void AnimateTile(ref int frame, ref int frameCounter)
@@ -61,15 +58,15 @@ namespace TerraEnergy.Tiles.FunctionalTiles
 
         }
 
-        public override bool NewRightClick(int i, int j)
+        public override bool RightClick(int i, int j)
         {
             Player player = Main.player[Main.myPlayer];
             Item currentSelectedItem = player.inventory[player.selectedItem];
 
             Tile tile = Main.tile[i, j];
 
-            int left = i - (tile.frameX / 18);
-            int top = j - (tile.frameY / 18);
+            int left = i - (tile.TileFrameX / 18);
+            int top = j - (tile.TileFrameY / 18);
 
             int index = ModContent.GetInstance<TerraForgeEntity>().Find(left, top);
 
@@ -94,8 +91,8 @@ namespace TerraEnergy.Tiles.FunctionalTiles
 
             Tile tile = Main.tile[i, j];
 
-            int left = i - (tile.frameX / 18);
-            int top = j - (tile.frameY / 18);
+            int left = i - (tile.TileFrameX / 18);
+            int top = j - (tile.TileFrameY / 18);
 
             int index = ModContent.GetInstance<TerraForgeEntity>().Find(left, top);
 
@@ -178,7 +175,7 @@ namespace TerraEnergy.Tiles.FunctionalTiles
         }*/
     }
 
-    class TerraForgeEntity : StorageEntity
+    public class TerraForgeEntity : StorageEntity
     {
         private Item slot1 = new Item();
         private Item slot2 = new Item();
@@ -215,17 +212,16 @@ namespace TerraEnergy.Tiles.FunctionalTiles
             base.Update();
         }
 
-        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
-        {
+        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
             return Place(i - 4, j - 2);
         }
 
-        public override bool ValidTile(int i, int j)
+        public override bool IsTileValidForEntity(int i, int j)
         {
             Tile tile = Main.tile[i, j];
             Main.NewText("here");
-            Main.NewText((tile.active() && tile.type == ModContent.TileType<TerraForge>() && tile.frameX == 0 && tile.frameY == 0));
-            return tile.active() && (tile.type == ModContent.TileType<TerraForge>()) && tile.frameX == 0 && tile.frameY == 0;
+            Main.NewText((tile.HasTile && tile.TileType == ModContent.TileType<TerraForge>() && tile.TileFrameX == 0 && tile.TileFrameY == 0));
+            return tile.HasTile && (tile.TileType == ModContent.TileType<TerraForge>()) && tile.TileFrameX == 0 && tile.TileFrameY == 0;
         }
     }
 }

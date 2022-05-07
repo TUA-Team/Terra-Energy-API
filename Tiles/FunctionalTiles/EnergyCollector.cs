@@ -6,11 +6,12 @@ using TerraEnergy.EnergyAPI;
 using TerraEnergy.Interface;
 using TerraEnergy.TileEntities;
 using TerraEnergy.Items;
+using Terraria.GameContent.ObjectInteractions;
 
 namespace TerraEnergy.Tiles.FunctionalTiles {
     class EnergyCollector : ModTile
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
             TileObjectData.newTile.Origin = new Point16(1, 2);
@@ -19,18 +20,21 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
             TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 18 };
             TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<EnergyCollectorTE>().Hook_AfterPlacement, -1, 0, false);
             TileObjectData.addTile(Type);
-            disableSmartCursor = true;
         }
 
-        public override bool NewRightClick(int i, int j)
+        public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
+            return false;
+        }
+
+        public override bool RightClick(int i, int j)
         {
             Player player = Main.player[Main.myPlayer];
             Item currentSelectedItem = player.inventory[player.selectedItem];
 
             Tile tile = Main.tile[i, j];
 
-            int left = i - (tile.frameX / 18);
-            int top = j - (tile.frameY / 18);
+            int left = i - (tile.TileFrameX / 18);
+            int top = j - (tile.TileFrameY / 18);
 
             int index = ModContent.GetInstance<EnergyCollectorTE>().Find(left, top);
 
@@ -49,7 +53,7 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
 
             if (currentSelectedItem.type == ModContent.ItemType<RodOfLinking>())
             {
-                RodOfLinking it = currentSelectedItem.modItem as RodOfLinking;
+                RodOfLinking it = currentSelectedItem.ModItem as RodOfLinking;
                 StorageEntity se = (StorageEntity)TileEntity.ByID[index];
 
                 var TE = TileEntity.ByID[index];

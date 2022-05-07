@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using TerraEnergy.EnergyAPI;
 using TerraEnergy.UI.Elements;
 using Terraria;
@@ -9,8 +10,8 @@ namespace TerraEnergy.UI {
     public class UIEnergyBar : UIElement
     {
 
-        private Texture2D energyBar;
-        private Texture2D fullEnergyBar;
+        private Asset<Texture2D> energyBar;
+        private Asset<Texture2D> fullEnergyBar;
 
         public EnergyCore BoundEnergyCore;
 
@@ -37,10 +38,10 @@ namespace TerraEnergy.UI {
         {
             CalculatedStyle innerDim = base.GetInnerDimensions();
             Vector2 picturePos = new Vector2(innerDim.X, innerDim.Y);
-            Rectangle r = energyBar.Bounds;
+            Rectangle r = energyBar.Value.Bounds;
 
 
-            spriteBatch.Draw(energyBar, new Vector2(innerDim.X + 386, innerDim.Y + 14), r, Color.White, 0f, r.Size(), new Vector2(1f, 0.5f), SpriteEffects.None, 0f);
+            spriteBatch.Draw(energyBar.Value, new Vector2(innerDim.X + 386, innerDim.Y + 14), r, Color.White, 0f, r.Size(), new Vector2(1f, 0.5f), SpriteEffects.None, 0f);
             if (IsMouseHovering)
             {
 
@@ -56,13 +57,13 @@ namespace TerraEnergy.UI {
                                          BoundEnergyCore.getMaxEnergyLevel() + " TE";
                 }
                 
-                //spriteBatch.Draw(Main.itemTexture[ItemID.Actuator], new Vector2(Main.mouseX, Main.mouseY + 20), r, Color.White, 0f, r.Size(), new Vector2(1f, 0.5f), SpriteEffects.None, 0f);
-                //spriteBatch.DrawString(Main.fontMouseText, currentEntity.energy.getCurrentEnergyLevel() + " / " + currentEntity.energy.getMaxEnergyLevel() + " TE", new Vector2(Main.mouseX, Main.mouseY + 20), Color.White);
+                //spriteBatch.Draw(TextureAssets.Item[ItemID.Actuator], new Vector2(Main.mouseX, Main.mouseY + 20), r, Color.White, 0f, r.Size(), new Vector2(1f, 0.5f), SpriteEffects.None, 0f);
+                //spriteBatch.DrawString(FontAssets.MouseText.Value, currentEntity.energy.getCurrentEnergyLevel() + " / " + currentEntity.energy.getMaxEnergyLevel() + " TE", new Vector2(Main.mouseX, Main.mouseY + 20), Color.White);
             }
 
             float percent = (BoundEnergyCore.getCurrentEnergyLevel() * 100 / BoundEnergyCore.getMaxEnergyLevel());
             Rectangle sourceRectangle = new Rectangle(0, 0, (int) (386 * (percent / 100)), 28);
-            spriteBatch.Draw(fullEnergyBar, new Vector2(innerDim.X + 386, innerDim.Y + 14), sourceRectangle, Color.White, 0f, r.Size(), new Vector2(1f, 0.5f), SpriteEffects.None, 0f);
+            spriteBatch.Draw(fullEnergyBar.Value, new Vector2(innerDim.X + 386, innerDim.Y + 14), sourceRectangle, Color.White, 0f, r.Size(), new Vector2(1f, 0.5f), SpriteEffects.None, 0f);
         }
     }
 }

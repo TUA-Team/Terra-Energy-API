@@ -7,10 +7,10 @@ namespace TerraEnergy.Items {
         private Point16 currentStockedEntityLocation;
 
         public override void SetDefaults() {
-            item.width = 34;
-            item.height = 34;
-            item.useStyle = 4;
-            item.consumable = false;
+            Item.width = 34;
+            Item.height = 34;
+            Item.useStyle = 4;
+            Item.consumable = false;
         }
 
         public void SaveLinkableEntityLocation<T>(T entity) where T : TileEntity {

@@ -1,10 +1,11 @@
-﻿using Terraria.ModLoader;
+﻿using TerraEnergy.Tiles.FunctionalTiles;
+using Terraria.ModLoader;
 
-namespace TerraEnergy.Tiles {
-    class TerraWaste_Item : ModItem {
+namespace TerraEnergy.Items {
+    class AdvancedCapacitor_Item : ModItem {
         public override void SetStaticDefaults() {
-            DisplayName.SetDefault("Terra Waste");
-            Tooltip.SetDefault("A block where the essence was completly drained...");
+            DisplayName.SetDefault("Advanced TE capacitor");
+            Tooltip.SetDefault("An advanced terra energy capacitor");
         }
 
         public override void SetDefaults() {
@@ -17,7 +18,7 @@ namespace TerraEnergy.Tiles {
             Item.useTime = 10;
             Item.useStyle = 1;
             Item.autoReuse = true;
-            Item.createTile = ModContent.TileType<TerraWaste>();
+            Item.createTile = ModContent.TileType<AdvancedCapacitor>();
         }
     }
 }

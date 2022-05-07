@@ -4,6 +4,7 @@ using ReLogic.Graphics;
 using TerraEnergy.EnergyAPI;
 using TerraEnergy.UI.Elements;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -21,7 +22,7 @@ namespace TUA.API.Inventory.UI {
 
         public override void Update(GameTime gameTime)
         {
-            ModItem modItem = item?.modItem;
+            ModItem modItem = item?.ModItem;
             if (modItem is EnergyItem energyItem)
             {
                 if (!energyItem.isFull())
@@ -36,7 +37,7 @@ namespace TUA.API.Inventory.UI {
             base.DrawSelf(spriteBatch);
             CalculatedStyle innerDim = GetInnerDimensions();
             Vector2 position = new Vector2(innerDim.X - 5, innerDim.Y - 15);
-            ModItem modItem = item?.modItem;
+            ModItem modItem = item?.ModItem;
             if (modItem != null)
             {
                 if (modItem is EnergyItem)
@@ -44,16 +45,16 @@ namespace TUA.API.Inventory.UI {
                     EnergyItem energyItem = modItem as EnergyItem;
                     if (energyItem.isFull())
                     {
-                        spriteBatch.DrawString(Main.fontMouseText, "Full!", position, Color.White);
+                        spriteBatch.DrawString(FontAssets.MouseText.Value, "Full!", position, Color.White);
                     }
                     else
                     {
-                        spriteBatch.DrawString(Main.fontMouseText, "Charging", position, Color.White);
+                        spriteBatch.DrawString(FontAssets.MouseText.Value, "Charging", position, Color.White);
                     }
                 }
                 else
                 {
-                    spriteBatch.DrawString(Main.fontMouseText, "Can't charge", position, Color.White);
+                    spriteBatch.DrawString(FontAssets.MouseText.Value, "Can't charge", position, Color.White);
                 }
             }
         }

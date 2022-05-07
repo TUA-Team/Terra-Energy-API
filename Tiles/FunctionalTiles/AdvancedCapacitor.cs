@@ -13,7 +13,7 @@ using TerraEnergy.Items;
 namespace TerraEnergy.Tiles.FunctionalTiles {
     public class AdvancedCapacitor : ModTile
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
             TileObjectData.newTile.Origin = new Point16(1, 2);
@@ -23,15 +23,15 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
             TileObjectData.addTile(Type);
         }
 
-        public override bool NewRightClick(int i, int j)
+        public override bool RightClick(int i, int j)
         {
             Player player = Main.player[Main.myPlayer];
             Item currentSelectedItem = player.inventory[player.selectedItem];
 
             Tile tile = Main.tile[i, j];
 
-            int left = i - (tile.frameX / 18);
-            int top = j - (tile.frameY / 18);
+            int left = i - (tile.TileFrameX / 18);
+            int top = j - (tile.TileFrameY / 18);
 
             int index = ModContent.GetInstance<AdvancedTECapacitorEntity>().Find(left, top);
 
@@ -46,9 +46,8 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
                 return false;
             }
 
-            if (currentSelectedItem.type == ModContent.ItemType<RodOfLinking>())
+            if (currentSelectedItem.ModItem is RodOfLinking it)
             {
-                RodOfLinking it = currentSelectedItem.modItem as RodOfLinking;
                 int tileEntityID = it.GetEntity();
 
                 if (tileEntityID == -1)
@@ -59,7 +58,8 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
 
                 CapacitorTE ce = (CapacitorTE)TileEntity.ByID[index];
 
-                if (ModTileEntity.GetTileEntity(it.GetStoredEntityType().type) is ITECapacitorLinkable terraEnergyCompatibleLinkable)
+                
+                if (TileEntity.ByID[it.GetStoredEntityType().type] is ITECapacitorLinkable terraEnergyCompatibleLinkable)
                 {
                     terraEnergyCompatibleLinkable.LinkToCapacitor(ce);
                     Main.NewText("Succesfully linked to a capacitor, now transferring energy to it", Color.ForestGreen);
@@ -92,7 +92,7 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
             energy = new EnergyCore(maxEnergy);
         }
 
-        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
+        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
         {
             energy = new EnergyCore(maxEnergy);
             maxTransferRate = 200;

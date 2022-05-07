@@ -1,23 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace TUA.Utilities {
-    public static class UIManager
+    public sealed class UIManager : ModSystem
     {
         private static UserInterface machineInterface;
         // private static UserInterface CapacitorInterface;
 
-        public static void InitAll()
-        {
+        public override void Load() {
+            if (Main.dedServ)
+                return;
+
             machineInterface = new UserInterface();
-            // CapacitorInterface = new UserInterface();
         }
 
-        public static void UpdateUI(GameTime gameTime)
-        {
-            if (machineInterface != null && machineInterface.IsVisible)
-            {
+        public override void Unload() {
+            machineInterface?.SetState(null);
+            machineInterface = null;
+        }
+
+        public override void UpdateUI(GameTime gameTime) {
+            if (machineInterface != null && machineInterface.IsVisible) {
                 machineInterface.Update(gameTime);
             }
         }

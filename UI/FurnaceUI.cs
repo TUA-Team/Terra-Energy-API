@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using TerraEnergy.EnergyAPI;
 using TerraEnergy.UI.Elements;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -22,14 +24,14 @@ namespace TerraEnergy.UI {
         private string _furnaceName = "";
 
         private UIElement xButton;
-        private Texture2D xButtonTexture;
+        private Asset<Texture2D> xButtonTexture;
 
         public Item InputItem => _input.item;
 
         public FurnaceUI(Ref<Item> input, Ref<Item> output, EnergyCore energyCore, string furnaceName)
         {
-            this._input = new InputOutputSlot(input, Main.inventoryBack10Texture);
-            this._output = new InputOutputSlot(output, Main.inventoryBack10Texture);
+            this._input = new InputOutputSlot(input, TextureAssets.InventoryBack10.Value);
+            this._output = new InputOutputSlot(output, TextureAssets.InventoryBack10.Value);
             this._furnaceName = furnaceName;
 
             _energyBar = new UIEnergyBar(energyCore);
@@ -37,15 +39,15 @@ namespace TerraEnergy.UI {
 
         public FurnaceUI(Ref<Item> input, Ref<Item> output, Ref<Item> fuel, FuelCore energyCore, string furnaceName)
         {
-            this._input = new InputOutputSlot(input, Main.inventoryBack10Texture);
-            this._output = new InputOutputSlot(output, Main.inventoryBack10Texture);
+            this._input = new InputOutputSlot(input, TextureAssets.InventoryBack10.Value);
+            this._output = new InputOutputSlot(output, TextureAssets.InventoryBack10.Value);
 
             if (energyCore != null)
             {
                 _energyBar = new UIEnergyBar(energyCore);
             }
 
-            this._fuel = new FuelSlot(fuel, Main.inventoryBack10Texture, energyCore);
+            this._fuel = new FuelSlot(fuel, TextureAssets.InventoryBack10.Value, energyCore);
             this._furnaceName = furnaceName;
         }
 
@@ -60,14 +62,14 @@ namespace TerraEnergy.UI {
             xButton.Top.Set(Main.screenHeight / 2f - 90f, 0f);
             xButton.OnClick += CloseButtonClicked;
 
-            furnaceUI = new CustomizableUIPanel(TerraEnergy.GetTexture("Texture/UI/panel"));
+            furnaceUI = new CustomizableUIPanel(TerraEnergy.GetTexture("Texture/UI/panel").Value);
             furnaceUI.SetPadding(0);
             furnaceUI.Width.Set(400, 0f);
             furnaceUI.Height.Set(200, 0f);
             furnaceUI.Top.Set(Main.screenHeight / 2 - 100, 0f);
             furnaceUI.Left.Set(Main.screenWidth / 2 - 200, 0f);
 
-            upgradeUI = new CustomizableUIPanel(TerraEnergy.GetTexture("Texture/UI/panel"));
+            upgradeUI = new CustomizableUIPanel(TerraEnergy.GetTexture("Texture/UI/panel").Value);
             upgradeUI.SetPadding(0);
             upgradeUI.Width.Set(200, 0f);
             upgradeUI.Height.Set(150, 0f);
@@ -120,7 +122,7 @@ namespace TerraEnergy.UI {
         {
             base.DrawChildren(spriteBatch);
             Vector2 nameDrawingPosition = new Vector2(Main.screenWidth / 2 - 60, Main.screenHeight / 2 - 95);
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, _furnaceName,
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, _furnaceName,
                 nameDrawingPosition, Color.White * 0.7f, 0f, Vector2.Zero,
                 Vector2.One);
             upgradeUI.isVisible = false;
@@ -130,11 +132,11 @@ namespace TerraEnergy.UI {
 
                 upgradeUI.isVisible = true;
                 Vector2 UpgradeDrawingPosition = new Vector2(Main.screenWidth / 2 + 230, Main.screenHeight / 2 - 95);
-                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, "Upgrade",
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, "Upgrade",
                     UpgradeDrawingPosition, Color.White * 0.7f, 0f, Vector2.Zero,
                     Vector2.One);
             }
-            spriteBatch.Draw(xButtonTexture, xButton.GetInnerDimensions().Position(), Color.White * 0.7f);
+            spriteBatch.Draw(xButtonTexture.Value, xButton.GetInnerDimensions().Position(), Color.White * 0.7f);
         }
     }
 }

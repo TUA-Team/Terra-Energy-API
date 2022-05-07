@@ -20,15 +20,12 @@ namespace TerraEnergy.EnergyAPI {
             return dumpList;
         }
 
-        public sealed override TagCompound Save()
-        {
-            TagCompound tag = new TagCompound();
+        public sealed override void SaveData(TagCompound tag) {
             SaveEntity(tag);
             tag.Add("energy", energy.getCurrentEnergyLevel());
-            return tag;
         }
 
-        public sealed override void Load(TagCompound tag)
+        public sealed override void LoadData(TagCompound tag)
         {
             energy = new EnergyCore(0);
             LoadEntity(tag);
@@ -45,20 +42,17 @@ namespace TerraEnergy.EnergyAPI {
             return output.ToArray();
         }
 
-        public static byte[] DecompressBytes(byte[] data)
-        {
+        public static byte[] DecompressBytes(byte[] data) {
             MemoryStream input = new MemoryStream(data);
             MemoryStream output = new MemoryStream();
-            using (var deflateStream = new DeflateStream(input, CompressionMode.Decompress))
-            {
+            using (var deflateStream = new DeflateStream(input, CompressionMode.Decompress)) {
                 deflateStream.CopyTo(output);
             }
             return output.ToArray();
         }
 
-        
 
-        public override void NetSend(BinaryWriter writer, bool lightSend)
+        public override void NetSend(BinaryWriter writer)
         {
             TagCompound tag = new TagCompound();
             tag.Add("energy", energy.getCurrentEnergyLevel());
@@ -66,7 +60,7 @@ namespace TerraEnergy.EnergyAPI {
             TagIO.Write(tag, writer);
         }
 
-        public override void NetReceive(BinaryReader reader, bool lightReceive)
+        public override void NetReceive(BinaryReader reader)
         {
             TagCompound tag = TagIO.Read(reader);
             energy = new EnergyCore(tag.GetAsInt("maxEnergy"));

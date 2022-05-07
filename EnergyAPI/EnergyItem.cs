@@ -1,16 +1,10 @@
 ﻿using System.Collections.Generic;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using TUA.API;
 
 namespace TerraEnergy.EnergyAPI {
     public abstract class EnergyItem : ModItem
     {
-        public override bool CloneNewInstances
-        {
-            get { return true; }
-        }
-
         private int maxEnergyStorage;
         private EnergyCore _energyCore;
         public int energy = 0;
@@ -37,12 +31,9 @@ namespace TerraEnergy.EnergyAPI {
 
         }
 
-        public sealed override TagCompound Save()
-        {
-            TagCompound tag = new TagCompound();
+        public sealed override void SaveData(TagCompound tag) {
             tag.Set("CurrentEnergy", _energyCore.getCurrentEnergyLevel());
             NewSave(ref tag);
-            return tag;
         }
 
         public virtual void NewSave(ref TagCompound tag)
@@ -50,9 +41,12 @@ namespace TerraEnergy.EnergyAPI {
 
         }
 
-        public sealed override void Load(TagCompound tag)
+        public sealed override void LoadData(TagCompound tag)
         {
-            _energyCore.addEnergy(tag.GetAsInt("currentEnergy"));
+            if (tag.ContainsKey("currentEnergy")) {
+                _energyCore.addEnergy(tag.GetAsInt("currentEnergy"));
+            }
+            
             NewLoad(tag);
         }
 
@@ -63,7 +57,7 @@ namespace TerraEnergy.EnergyAPI {
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            TooltipLine energyLine = new TooltipLine(mod, "energy", _energyCore.getCurrentEnergyLevel() + " / " + _energyCore.getMaxEnergyLevel() + " TE");
+            TooltipLine energyLine = new(Mod, "energy", _energyCore.getCurrentEnergyLevel() + " / " + _energyCore.getMaxEnergyLevel() + " TE");
             tooltips.Add(energyLine);
         }
 

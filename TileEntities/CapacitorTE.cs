@@ -63,10 +63,9 @@ namespace TerraEnergy.TileEntities
             }
         }
 
-        public override bool ValidTile(int i, int j)
-        {
-            Tile tile = Main.tile[i, j];
-            return tile.active() && (tile.type == ModContent.TileType<BasicCapacitor>() || tile.type == ModContent.TileType<AdvancedCapacitor>());
+        public override bool IsTileValidForEntity(int x, int y) {
+            Tile tile = Main.tile[x, y];
+            return tile.HasTile && (tile.TileType == ModContent.TileType<BasicCapacitor>() || tile.TileType == ModContent.TileType<AdvancedCapacitor>());
         }
 
         public override void Update()
@@ -77,8 +76,7 @@ namespace TerraEnergy.TileEntities
             }
         }
 
-        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction)
-        {
+        public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
             InitializeItemSlot();
             energy = new EnergyCore(maxEnergy);
             return Place(i - 1, j - 1);

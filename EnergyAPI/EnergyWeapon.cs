@@ -15,7 +15,7 @@ namespace TerraEnergy.EnergyAPI
             set { _energyConsumedPerShot = value; }
         }
 
-        public sealed override bool UseItem(Player player)
+        public sealed override bool? UseItem(Player player)
         {
             if (CurrentEnergy < EnergyConsumedPerShot)
             {
