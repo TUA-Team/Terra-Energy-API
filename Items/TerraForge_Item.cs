@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 
 namespace TerraEnergy.Items {
+    // TODO: shrink this sprite
     class TerraForge_Item : ModItem {
         public override void SetStaticDefaults() {
             DisplayName.SetDefault("Terra Forge");
@@ -9,7 +10,6 @@ namespace TerraEnergy.Items {
         }
 
         public override void SetDefaults() {
-
             Item.width = 96;
             Item.height = 152;
             Item.maxStack = 999;

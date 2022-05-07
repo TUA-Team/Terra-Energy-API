@@ -31,7 +31,7 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
             int left = i - (tile.TileFrameX / 18);
             int top = j - (tile.TileFrameY / 18);
 
-            Main.NewText("X " + i + " Y " + j);
+            //Main.NewText("X " + i + " Y " + j);
 
             int index = ModContent.GetInstance<BasicTECapacitorEntity>().Find(left, top);
 
@@ -42,7 +42,6 @@ namespace TerraEnergy.Tiles.FunctionalTiles {
             }
             if (currentSelectedItem.type == ModContent.ItemType<TerraMeter>())
             {
-
                 StorageEntity se = (StorageEntity)TileEntity.ByID[index];
                 Main.NewText(se.GetEnergy().getCurrentEnergyLevel() + " / " + se.GetEnergy().getMaxEnergyLevel() + " TE in this Capacitor");
                 return false;

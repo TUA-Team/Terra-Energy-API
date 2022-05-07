@@ -7,15 +7,15 @@ using TUA.API;
 
 namespace TerraEnergy.Tiles
 {
-    public class Capacitor : ModTile
+    public abstract class Capacitor : ModTile
     {
         public int maxEnergyStorage;
 
-        public ModTileEntity GetCapacitorEntity()
+        /*public ModTileEntity GetCapacitorEntity()
         {
             return ModContent.GetInstance<CapacitorTE>();
 
-        }
+        }*/
 
         public override void SetStaticDefaults()
         {
@@ -25,10 +25,10 @@ namespace TerraEnergy.Tiles
 
        
 
-        public override void KillMultiTile(int i, int j, int frameX, int frameY)
+        /*public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
             ModContent.GetInstance<CapacitorTE>().Kill(i, j);
-        }
+        }*/
     }
 
 }

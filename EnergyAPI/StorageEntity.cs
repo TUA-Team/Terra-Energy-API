@@ -22,7 +22,8 @@ namespace TerraEnergy.EnergyAPI {
 
         public sealed override void SaveData(TagCompound tag) {
             SaveEntity(tag);
-            tag.Add("energy", energy.getCurrentEnergyLevel());
+            // TODO: so this is broken, `energy` is null or something
+            //tag.Add("energy", energy.getCurrentEnergyLevel());
         }
 
         public sealed override void LoadData(TagCompound tag)
