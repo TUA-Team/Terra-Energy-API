@@ -4,11 +4,14 @@ using ReLogic.Content;
 using TerraEnergy.Common;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace TerraEnergy.Content.Capacitors.Gui {
     public sealed class CapacitorGui : UIState {
+        private const int TEX_WIDTH = 386;
+        private const int TEX_HEIGHT = 28;
+
+
         private EnergyContainer energy;
 
         private Asset<Texture2D> energyBarFilledTex;
@@ -28,22 +31,22 @@ namespace TerraEnergy.Content.Capacitors.Gui {
 
             panel = new();
 
-            panel.Width.Set(400, 0);
+            panel.Width.Set(410, 0);
             panel.Height.Set(200, 0);
 
-            panel.Top.Set(Main.screenHeight / 2 - 100, 0);
             panel.Left.Set(Main.screenWidth / 2 - 200, 0);
+            panel.Top.Set(Main.screenHeight / 2 - 100, 0);
 
             Append(panel);
 
 
             energyBar = new(TerraEnergy.GetTexture("EnergyBar"));
 
-            energyBar.Height.Set(28, 0);
-            energyBar.Width.Set(386, 0);
+            energyBar.Width.Set(TEX_WIDTH, 0);
+            energyBar.Height.Set(TEX_HEIGHT, 0);
 
-            energyBar.VAlign = 0.95f;
             energyBar.HAlign = 0.5f;
+            energyBar.VAlign = 0.95f;
 
             panel.Append(energyBar);
         }
@@ -55,15 +58,9 @@ namespace TerraEnergy.Content.Capacitors.Gui {
             Rectangle hitbox = energyBar.GetInnerDimensions().ToRectangle();
 
             float percent = energy.EnergyLevel / energy.MaxEnergyLevel;
-            Rectangle sourceRectangle = new Rectangle(0, 0, (int)(386 * percent), 28);
+            Rectangle sourceRectangle = new(0, 0, (int)(TEX_WIDTH * percent), TEX_HEIGHT);
 
             spriteBatch.Draw(energyBarFilledTex.Value, new Vector2(hitbox.X, hitbox.Y), sourceRectangle, Color.White);
-        }
-
-        public override void Update(GameTime gameTime) {
-            if (!Main.playerInventory) {
-                ModContent.GetInstance<CapacitorGuiSystem>().userInterface.SetState(null);
-            }
         }
     }
 }

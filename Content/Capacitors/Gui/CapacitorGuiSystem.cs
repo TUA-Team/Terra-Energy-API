@@ -20,7 +20,9 @@ namespace TerraEnergy.Content.Capacitors.Gui {
         }
 
         public override void UpdateUI(GameTime gameTime) {
-            userInterface.Update(gameTime);
+            if (Main.playerInventory) {
+                userInterface.Update(gameTime);
+            }
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
@@ -28,7 +30,9 @@ namespace TerraEnergy.Content.Capacitors.Gui {
 
             if (index != -1) {
                 layers.Insert(index + 1, new LegacyGameInterfaceLayer("TerraEnergy: Capacitor", () => {
-                    userInterface.Draw(Main.spriteBatch, new GameTime());
+                    if (Main.playerInventory) {
+                        userInterface.Draw(Main.spriteBatch, new GameTime());
+                    }
                     return true;
                 }, InterfaceScaleType.UI));
             }
